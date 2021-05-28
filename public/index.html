@@ -1,0 +1,208 @@
+<html>
+
+<head>
+  <title>API - ALAA Naoufal</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="shortcut icon" href="./images/logo192.png" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><img src="./images/logo256.png" width="150px" /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link" aria-current="page" href="#">Users</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+<div align="center">
+  <div  class="card text-center w-75 mt-3">
+    <div class="card-header">
+      DB insert
+    </div>
+    <div align="center" class="card-body">
+      <h5 class="card-title">Adding a user</h5>
+
+      <div class="row g-2 mt-3 ">
+        <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
+        <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
+        <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="password"/></div>
+        <div class="col-12">
+
+            <select id="role" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
+              <option selected>Choisissez le rôle</option>
+              <option value="admin">Admin</option>
+              <option value="guest">Guest</option>
+              <option value="author">Author</option>
+            </select>
+
+        </div>
+        <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
+      </div>
+  </div>
+</div>
+</div>
+<div align="center">
+<div  class="card text-center m-3 w-75">
+  <div class="card-header">
+    Getting a specific user by id
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Rechercher un utilisateur</h5>
+    <div class="row row-cols-lg-auto g-3 align-items-center">
+      <div class="col-3">
+        <input class="form-control" placeholder="Enter id" type="text" id="id"/>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-danger m-3" onclick="getUser()">Search user</button>
+      </div>
+    </div>
+
+
+      <div id="row"></div>
+    </div>
+  </div>
+</div>
+</div>
+    
+
+
+  <div class="container mt-3">
+    <button class="btn btn-outline-danger" onclick="DisplayUsers(); this.onclick=null;">Display all USERS</button>
+    <table id="table" style="display: none;" class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">username</th>
+          <th scope="col">email</th>
+          <th scope="col">role</th>
+        </tr>
+      </thead>
+      <tbody id="all">
+
+      </tbody>
+    </table>
+    </div>
+  </body>
+
+
+
+
+
+
+
+
+  <div align="center">
+    <div  class="card text-center w-75 mt-3">
+      <div class="card-header">
+        DB Update
+      </div>
+      <div align="center" class="card-body">
+        <h5 class="card-title">Update a user</h5>
+  
+        <div class="row g-2 mt-3 ">
+          <div class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-3">
+              <input class="form-control" placeholder="Enter id" type="text" id="mysearch"/>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-danger m-3" onclick="getUser1()">Search user</button>
+            </div>
+          </div>
+          <div id="err"></div>
+          <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="usernameUP"/></div>
+          <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="emailUP"/></div>
+          <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="passwordUP"/></div>
+          <div class="col-12">
+  
+              <select id="roleUP" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
+                <option id="admin" value="admin">Admin</option>
+                <option id="guest" value="guest">Guest</option>
+                <option id="author" value="author">Author</option>
+              </select>
+  
+          </div>
+          <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
+        </div>
+    </div>
+  </div>
+  </div>
+  <div class="footer">&copy; Copyright Naoufal ALAA | Powered by : <img width="100px" src="./images/express.png"/></div>
+  <script >
+    const URL = 'http://localhost:3000/users/';
+    async function DisplayUsers(){
+      document.getElementById('table').style.display='block';
+      getUsers();
+    }
+    async function getUsers() {
+        let response = await fetch(URL);
+        let data = await response.text();
+        let obj = JSON.parse(data);
+        obj.map(item=>{
+          document.getElementById('all').innerHTML+='<tr><td>'+item.id+'</td><td>'+item.username+'</td><td>'+item.email+'</td><td>'+item.role+'</td></tr>'
+        })
+      }
+    async function getUser() {
+        let id = document.querySelector("#id").value
+        if (id){
+          let response = await fetch(`${URL}${id}`);
+          let data = await response.text();
+          document.getElementById('row').innerHTML='<div class="alert alert-info mt-3" role="alert"><strong>'+data.split(',')[1].split(':')[1].split('"')[1].split('"')[0]+'</strong> | <strong>'+data.split(',')[2].split(':')[1].split('"')[1].split('"')[0]+'</strong> | <strong>'+data.split(',')[3].split(':')[1].split('"')[1].split('"')[0].split('}')[0]+'</strong></div>'
+          return;
+        }else{
+          document.getElementById('row').innerHTML='<div class="alert alert-warning mt-3" role="alert">Please specify the ID</div>'
+        }
+    }
+    async function getUser1() {
+        let id = document.querySelector("#mysearch").value
+        if (id){
+          let response = await fetch(`${URL}${id}`);
+          let data = await response.text();
+          document.getElementById('usernameUP').value=data.split(',')[1].split(':')[1].split('"')[1].split('"')[0]
+          document.getElementById('emailUP').value=data.split(',')[2].split(':')[1].split('"')[1].split('"')[0]
+          const role=data.split(',')[3].split(':')[1].split('"')[1].split('"')[0]
+          if(role==='admin') document.getElementById('admin').setAttribute("selected","")
+          if(role==='guest') document.getElementById('guest').setAttribute("selected","")
+          if(role==='author') document.getElementById('author').setAttribute("selected","")
+          return;
+        }else{
+          document.getElementById('err').innerHTML='<div class="alert alert-warning mt-3" role="alert">Please specify the ID</div>'
+        }
+    }
+
+    async function createUser() {
+        var _data = {}
+        _data.username = document.querySelector("#username").value
+        _data.email = document.querySelector("#email").value
+        _data.password = document.querySelector("#password").value
+        _data.role = document.querySelector("#role").value
+
+        fetch(URL, {
+          method: "POST",
+          body: JSON.stringify(_data),
+          headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        .then(response => response.json()) 
+        .then(json => console.log(json))
+        .catch(err => console.log(err));
+    }
+
+    async function updateUser(){
+      const data= {}
+  
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</html>
