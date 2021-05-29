@@ -26,128 +26,115 @@
       </div>
     </div>
   </nav>
-<div align="center">
-  <div  class="card text-center w-75 mt-3">
-    <div class="card-header">
-      DB insert
-    </div>
-    <div align="center" class="card-body">
-      <h5 class="card-title">Adding a user</h5>
 
-      <div class="row g-2 mt-3 ">
-        <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
-        <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
-        <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="password"/></div>
-        <div class="col-12">
 
-            <select id="role" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
-              <option selected>Choisissez le rôle</option>
-              <option value="admin">Admin</option>
-              <option value="guest">Guest</option>
-              <option value="author">Author</option>
-            </select>
-
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">All Users</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="false">Add User</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#modify" type="button" role="tab" aria-controls="modify" aria-selected="false">Edit users</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div align="center" class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="home-tab">
+      <div class="m-3">
+        <div class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-auto">
+            <input class="form-control" placeholder="Enter id" type="text" id="id"/>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-danger m-3" onclick="getUser()">Search <i class="fas fa-search"></i></button>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-outline-primary" onclick="getUsers(); this.onclick=null;">Display all USERS</button>
+          </div>
         </div>
-        <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
-      </div>
-  </div>
-</div>
-</div>
-<div align="center">
-<div  class="card text-center m-3 w-75">
-  <div class="card-header">
-    Getting a specific user by id
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Rechercher un utilisateur</h5>
-    <div class="row row-cols-lg-auto g-3 align-items-center">
-      <div class="col-auto">
-        <input class="form-control" placeholder="Enter id" type="text" id="id"/>
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-danger m-3" onclick="getUser()">Search <i class="fas fa-search"></i></button>
-      </div>
-    </div>
-
-
-      <div id="row"></div>
-    </div>
-  </div>
-</div>
-</div>
+        <div id="data"></div>
+        <table align="center" class="w-75 table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">username</th>
+              <th scope="col">email</th>
+              <th scope="col">role</th>
+            </tr>
+          </thead>
+          <tbody id="all">
     
-
-
-
-
-
-
-
-
-
-
-  <div align="center">
-    <div  class="card text-center w-75 mt-3">
-      <div class="card-header">
-        DB Update
+          </tbody>
+        </table>
       </div>
-      <div align="center" class="card-body">
-        <h5 class="card-title">Update a user</h5>
-  
-        <div class="row g-2 mt-3 ">
-          <div class="row row-cols-lg-auto g-3 align-items-center">
-            <div class="col-auto">
-              <input class="form-control" placeholder="Enter id" type="text" id="mysearch"/>
+    </div>
+    <div align="center" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="card text-center w-75 mt-3">
+        <div align="center" class="card-body">
+          <h5 class="card-title">Adding a user</h5>
+    
+          <div class="row g-2 mt-3 ">
+            <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
+            <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
+            <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="password"/></div>
+            <div class="col-12">
+    
+                <select id="role" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
+                  <option selected>Choisissez le rôle</option>
+                  <option value="admin">Admin</option>
+                  <option value="guest">Guest</option>
+                  <option value="author">Author</option>
+                </select>
+    
             </div>
-            <div class="col-auto">
-              <button class="btn btn-danger m-3" onclick="getUser1()">Search <i class="fas fa-search"></i></button>
-            </div>
+            <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
           </div>
-          <div id="err"></div>
-          <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="usernameUP"/></div>
-          <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="emailUP"/></div>
-          <div class="col-3"><input class="form-control" type="password" placeholder="Modify Password" name="password" id="passwordUP"/></div>
-          <div class="col-12">
-  
-              <select id="roleUP" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
-                <option id="admin" value="admin">Admin</option>
-                <option id="guest" value="guest">Guest</option>
-                <option id="author" value="author">Author</option>
-              </select>
-  
-          </div>
-          <button class="btn btn-primary col-auto" onclick="createUser()">Modify <i class="fas fa-edit"></i>  </button>
         </div>
+      </div>
+    </div>
+    <div align="center" class="tab-pane fade" id="modify" role="tabpanel" aria-labelledby="contact-tab">
+      <div class="card text-center w-75 mt-3">
+        <h5 class="card-title mt-4">Modify a specific user</h5>
+        <div align="center" class="card-body">  
+          <div class="row g-2">
+            <div class="row row-cols-lg-auto g-3 align-items-center">
+              <div class="col-auto">
+                <input class="form-control" placeholder="Enter id" type="text" id="mysearch"/>
+              </div>
+              <div class="col-auto">
+                <button class="btn btn-danger m-3" onclick="getUser1()">Search <i class="fas fa-search"></i></button>
+              </div>
+            </div>
+            <div id="err"></div>
+            <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="usernameUP"/></div>
+            <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="emailUP"/></div>
+            <div class="col-3"><input class="form-control" type="password" placeholder="Modify Password" name="password" id="passwordUP"/></div>
+            <div class="col-12">
+    
+                <select id="roleUP" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
+                  <option id="admin" value="admin">Admin</option>
+                  <option id="guest" value="guest">Guest</option>
+                  <option id="author" value="author">Author</option>
+                </select>
+    
+            </div>
+            <button class="btn btn-primary col-auto" onclick="createUser()">Modify <i class="fas fa-edit"></i>  </button>
+          </div>
+      </div>
+    </div>
     </div>
   </div>
-  </div>
 
 
-
-<div align="center" class="m-3">
-    <button class="btn btn-outline-primary" onclick="DisplayUsers(); this.onclick=null;">Display all USERS</button>
-    <table id="table" style="visibility: hidden;" class="w-75 table table-striped table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">username</th>
-          <th scope="col">email</th>
-          <th scope="col">role</th>
-        </tr>
-      </thead>
-      <tbody id="all">
-
-      </tbody>
-    </table>
-  </div>
   </body>
+
+
+
+
   <div class="footer">&copy; Copyright Naoufal ALAA | Powered by : <img width="100px" src="./images/express.png"/></div>
   <script >
     const URL = 'http://localhost:3000/users/';
-    async function DisplayUsers(){
-      document.getElementById('table').style.visibility='visible';
-      getUsers();
-    }
     async function getUsers() {
         let response = await fetch(URL);
         let data = await response.text();
@@ -158,13 +145,18 @@
       }
     async function getUser() {
         let id = document.querySelector("#id").value
+        try{
         if (id){
           let response = await fetch(`${URL}${id}`);
           let data = await response.text();
-          document.getElementById('row').innerHTML='<div class="alert alert-info mt-3" role="alert"><strong>'+data.split(',')[1].split(':')[1].split('"')[1].split('"')[0]+'</strong> | <strong>'+data.split(',')[2].split(':')[1].split('"')[1].split('"')[0]+'</strong> | <strong>'+data.split(',')[3].split(':')[1].split('"')[1].split('"')[0].split('}')[0]+'</strong></div>'
+          document.getElementById('data').innerHTML='<table align="center" class="w-75 table table-striped table-hover"><thead><tr><th scope="col">#</th><th scope="col">username</th><th scope="col">email</th><th scope="col">role</th></tr></thead><tbody><tr><td>'+data.split(',')[0].split(':')[1]+'</td><td>'+data.split(',')[1].split(':')[1].split('"')[1].split('"')[0]+'</td><td>'+data.split(',')[2].split(':')[1].split('"')[1].split('"')[0]+'</td><td>'+data.split(',')[3].split(':')[1].split('"')[1].split('"')[0]+'</td></tr></tbody></table>'
           return;
         }else{
-          document.getElementById('row').innerHTML='<div class="alert alert-warning mt-3" role="alert">Please specify the ID</div>'
+          document.getElementById('data').innerHTML='<div class="alert alert-warning mt-3" role="alert">Please specify the ID</div>'
+        }
+        }
+        catch(err){
+          document.getElementById('data').innerHTML='<div class="alert alert-danger mt-3" role="alert">The ID does\'t exist</div>'
         }
     }
     async function getUser1() {
@@ -203,7 +195,11 @@
 
     async function updateUser(){
       const data= {}
-  
+      data.username = document.querySelector("#usernameUP").value
+      data.email = document.querySelector("#emailUP").value
+      data.password = document.querySelector("#passwordUP").value
+      data.role = document.querySelector("#roleUP").value
+
     }
   </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
