@@ -54,7 +54,7 @@
           </div>
         </div>
         <div id="data"></div>
-        <table align="center" class="w-75 table table-striped table-hover">
+        <table align="center" style="display: none;" id="matable" class="w-75 table table-striped table-hover">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -136,6 +136,8 @@
   <script >
     const URL = 'http://localhost:3000/users/';
     async function getUsers() {
+      document.getElementById('matable').style.display='block'
+        document.getElementById('data').style.display='none'
         let response = await fetch(URL);
         let data = await response.text();
         let obj = JSON.parse(data);
@@ -145,6 +147,8 @@
       }
     async function getUser() {
         let id = document.querySelector("#id").value
+        document.getElementById('matable').style.display='none'
+        document.getElementById('data').style.display='block'
         try{
         if (id){
           let response = await fetch(`${URL}${id}`);
@@ -197,7 +201,6 @@
       const data= {}
       data.username = document.querySelector("#usernameUP").value
       data.email = document.querySelector("#emailUP").value
-
       data.role = document.querySelector("#roleUP").value
       fetch(URL, {
           method: "PUT",
