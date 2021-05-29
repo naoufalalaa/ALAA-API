@@ -63,19 +63,19 @@ const { User } = require('../models')
         
    },
    async updateUser(user) {
-    const User = await this.getUserByEmail(user.email)
-    console.log(user)
-    if (user == null) return "Can't update user"
+    const _user = await this.getUserByEmail(user.email)
+    console.log("USER: ", user)
+    if (_user == null) return {"error": "Can't update user"}
     try{
       const updated = await User.update(user, {
         where: {
-          id: user.id
+          id: _user.id
         }
       });
       if (updated == 1) return user;
       else throw new Error()
     } catch(error){
-      return "Can't update this user"
+      return {"error": "Can't update user"}
     }
 
    },
