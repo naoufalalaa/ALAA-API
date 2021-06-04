@@ -73,7 +73,7 @@
       <div class="card text-center w-75 mt-3">
         <div align="center" class="card-body">
           <h5 class="card-title">Adding a user</h5>
-    
+          <div id="validate"></div>
           <div class="row g-2 mt-3 ">
             <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
             <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
@@ -205,6 +205,7 @@
         .then(response => response.json()) 
         .then(json => console.log(json))
         .catch(err => console.log(err));
+        document.getElementById('validate').innerHTML="<div class='alert alert-success'>User added successfully</div>"
     }
 
     async function updateUser(){
