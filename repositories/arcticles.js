@@ -11,12 +11,11 @@ var sequelize = require('sequelize');
 
 
    getArticlesById(id) {
-    var x= Article.findAll({
+    return Article.findAll({
       where: {       
           id: id
       }
-    });
-    return x
+    })
     },
 
 
