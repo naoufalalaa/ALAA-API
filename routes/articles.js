@@ -1,9 +1,8 @@
-
-var articleRepo = require('../repositories/articles')
-var commsRepo = require('../repositories/comments')
 var express = require('express');
 var router = express.Router();
-const moment = require('moment')
+var articleRepo = require('../repositories/articles')
+var commsRepo = require('../repositories/comments')
+
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {

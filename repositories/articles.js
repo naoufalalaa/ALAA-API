@@ -1,5 +1,4 @@
 const { Article } = require('../models')
-var sequelize = require('sequelize');
  module.exports = {
    getAllArticles() {
      return Article.findAll()
