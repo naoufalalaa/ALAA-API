@@ -1,12 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var articleRepo = require('../repositories/articles')
-var commsRepo = require('../repositories/comments')
-
-
+const router = require('express').Router();
+const commsRepo = require('../repositories/comments')
+const articleRepo = require('../repositories/articles')
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
-  res.send(await articleRepo.getAllArticles())
+  res.send(await articleRepo.getArticles())
+});
+
+router.get('/count', async function(req, res, next) {
+  res.sendStatus(await articleRepo.countarticle());
+});
+
+router.get('/countComm', async function(req, res, next) {
+  res.send(await commsRepo.countComments());
 });
 
 router.get('/:id', async function(req, res, next) {

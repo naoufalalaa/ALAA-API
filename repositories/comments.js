@@ -1,13 +1,32 @@
 const { Comment } = require('../models')
+const { Article } = require('../models')  
+var sequelize = require('sequelize');
  module.exports = {
    getAllComments() {
-     return Comment.findAll()
+     return Article.findAll({
+      group : ['Article.id'],
+      attributes: ['title', [sequelize.fn('COUNT', 'Comments.id'), 'NbrComments']],
+      include: { model: Comment,attributes: []}
+    });
    },
+   countComments(offset = 0, limit = 10) {
+    return Article.findAll({
+     group : ['Article.id'],
+     attributes: ['id','title','content','createdAt', [sequelize.fn('COUNT', 'Comments.id'), 'NbrComments']],
+     include: { model: Comment,attributes: []}
+   });
+  },
    getComments(offset = 0, limit = 10){
-    return  sequelize.query("SELECT * FROM Comments LIMIT "+ limit +" OFFSET "+offset)
+    return  Comment.findAll({ offset: offset, limit: limit })
   } ,
 
-
+  async countArticle(ida){
+    return await Comment.count({
+      where:  {
+        id:ida 
+      }
+    });
+  },
    getComments(id) {
     var x= Comment.findAll({
       where: {       
@@ -16,6 +35,14 @@ const { Comment } = require('../models')
     });
     return x
     },
+    getArticleComments(id) {
+      var x= Comment.findAll({
+        where: {       
+          ArticleId: id
+        }
+      });
+      return x
+      },
 
     getPostComments(id) {
       var x= Comment.findAll({

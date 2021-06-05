@@ -1,21 +1,35 @@
 const { Article } = require('../models')
+var sequelize = require('sequelize');
  module.exports = {
    getAllArticles() {
      return Article.findAll()
    },
    // méthodes à implémenter
+
+  async countarticle(){
+    return await Article.count();
+  },
    getArticles(offset = 0, limit = 10){
     return  Article.findAll({ offset: offset, limit: limit });
   } ,
 
 
    getArticlesById(id) {
-    return Article.findAll({
+    var x= Article.findAll({
       where: {       
           id: id
       }
-    })
+    });
+    return x
     },
+    getUserArticles(id) {
+      var x= Article.findAll({
+        where: {       
+          UserId: id
+        }
+      });
+      return x
+      },
 
 
     async addArticle(Article) { 

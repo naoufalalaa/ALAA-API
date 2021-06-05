@@ -12,6 +12,77 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script>
+    let offset =1;
+    let limit = 20;
+    let count;
+    let localPage=1;
+    let lastpage=0;
+    async function getArticles() {
+          let res = await fetch('http://localhost:3000/articles/count');
+           count = await res.status;
+          document.getElementById('count').innerHTML +="<small>Total posts: "+ count +"</small>";
+          let response = await fetch('http://localhost:3000/articles/countComm');
+          data = await response.text()
+          let obj = JSON.parse(data);
+          console.log(obj)
+          let cpt=1;
+
+          obj.map( item=>{
+            if(cpt >= offset && cpt <= limit ){
+              document.getElementById('Articles').innerHTML +='<div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title"> <a onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h5> <p class="card-text">'+item.content+'</p></div><div class="card-footer"> <small style="float: right">'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small>'+item.NbrComments+' </div></div>';
+            }
+            cpt++;
+          })
+          let nbPage= count/20;
+          document.getElementById('padding').innerHTML +='<a id="padback" onclick="setpage('+(localPage-1)+')" >&laquo;</a>';
+
+          for(let i=1;i<=nbPage;i++){
+            document.getElementById('padding').innerHTML +='<a id="pad'+i+'"onclick="setpage('+i+')">'+i+'</a>';
+          }
+
+          document.getElementById('padding').innerHTML +='<a id="padnext" onclick="setpage('+(localPage+1)+')">&raquo;</a>';
+          colorlocalpad();
+        }
+        function setpage(page){
+          let nbPage= count/20;
+          if(page<1){return;}
+          if(page>nbPage){return;}
+          lastpage=localPage;
+          localPage=page;
+          offset= ((page-1)*20)+1 ;
+          limit= (page*20) ;
+          document.getElementById('count').innerHTML='';
+          document.getElementById('lstArticle').innerHTML='';
+          document.getElementById('padding').innerHTML ='';
+          getArticles();
+        }
+        function colorlocalpad(){
+          document.getElementById('pad'+localPage).classList.add("active");
+          document.getElementById('pad'+lastpage).classList.remove("active");
+        }
+        async function getArticleWithComm(id){
+          let response = await fetch('http://localhost:3000/articles/'+id );
+          let data = await response.text()
+          let obj = JSON.parse(data);
+          document.getElementById('lstArticle').innerHTML='<a class="btn btn-light" onclick="setpage('+localPage+')"> << Back </a> <br> <br>';
+          document.getElementById('padding').innerHTML='';
+          document.getElementById('Articles').innerHTML=""
+          obj.map( item=>{
+              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"> <div class="forum-icon"> <i class="fa fa-shield"></i> </div> <a class="forum-item-title" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
+          })
+          response = await fetch('http://localhost:3000/articles/'+id+'/comments');
+          data = await response.text()
+          obj = JSON.parse(data);
+          console.log(obj);
+          document.getElementById('lstArticle').innerHTML+='<h4> Comments </h4> ';
+          obj.map( item=>{
+              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"> <div class="forum-icon"> <i class="fa fa-comment"></i> </div> <div class="forum-sub-title">'+item.content+' </div><br>';
+            
+          })
+        }
+  </script>
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0;z-index:0" viewBox="0 0 1440 320"><path fill="#f3f4f5" fill-opacity="1" d="M0,0L0,128L288,128L288,160L576,160L576,128L864,128L864,64L1152,64L1152,288L1440,288L1440,0L1152,0L1152,0L864,0L864,0L576,0L576,0L288,0L288,0L0,0L0,0Z"></path></svg>
@@ -36,17 +107,29 @@
     <H1 align="center">Welcome to the main Blog</H1>
     <p class="text-center text-muted">This blog is made for the purpose of learning</p>
     <hr width="50%"> 
-    <button class="btn btn-light col-3 mb-3" onclick="getArticles(); this.onclick=null;">Afficher mon blog</button>
-    <div id="article" class="row row-cols-1 row-cols-md-3 g-4">
-
-      
-
-    </div>
+    <div align="left" class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                      <div class="ibox-content forum-container">
+                          <div class="forum-title">
+                              <div id="count" class="pull-right forum-desc">  
+                              </div>
+                              <h3>General subjects</h3>
+                          </div>
+                          <div id="lstArticle"></div>
+                          <div id="Articles" class="row row-cols-1 row-cols-md-3 g-4"">        
+                            <script> getArticles();</script>
+                          </div>
+                          <div id="padding" class="pagination">
+                          </div>
+                      </div>
+              </div>
+          </div>
+          </div>
+      </div>
   </div>
-
-
-
-
   <div id="USERS" style="position: relative;display: none;">
     <ul class=" nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
@@ -147,6 +230,7 @@
     </div>
   </div>
 
+  
 </body>
 <div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#f1f1f1" fill-opacity="1" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,250.7C1248,256,1344,288,1392,304L1440,320L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
@@ -230,7 +314,7 @@
       data.username = document.querySelector("#usernameUP").value
       data.email = document.querySelector("#emailUP").value
       data.role = document.querySelector("#roleUP").value
-      fetch(URL, {
+      await fetch(URL, {
           method: "PUT",
           body: JSON.stringify(data),
           headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -239,14 +323,14 @@
     }
     
     //Articles
-    async function getArticles() {
+    /*async function getArticles() {
         let response = await fetch(URLArt);
         let data = await response.text();
         let obj = JSON.parse(data);
         obj.map(item=>{
-          document.getElementById('article').innerHTML+='<div align="left" class="col"><div class="card"><div class="card-body"><h5 class="card-title">'+item.title+'</h5><p class="card-text">'+item.content+'</p></div></div></div>'
+          document.getElementById('article').innerHTML+='<div align="left" class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title">'+item.title+'</h5><p class="card-text">'+item.content+'</p></div><div class="card-footer"><small class="text-muted"><i class="fas fa-history"></i> '+item.createdAt+'</small></div></div></div>'
         })
-      }
+      }*/
     //gestion de la page
     function Users(){
       document.getElementById('USERS').style.display="block";
