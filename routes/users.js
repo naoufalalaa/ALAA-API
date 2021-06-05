@@ -5,9 +5,7 @@ const moment = require('moment')
 
 /* GET home page. */
 router.get('/', async function(req, res){
-	//user = await User.getAllUsers();
-	//console.log(user)
-	res.send(await User.getAllUsers())
+	return res.send(await User.getAllUsers())
 })
 
 router.get('/:id', async function(req, res){

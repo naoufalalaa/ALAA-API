@@ -1,6 +1,10 @@
-const router = require('express').Router();
-const articleRepo = require('../repositories/articles')
-const commsRepo = require('../repositories/comments')
+
+var articleRepo = require('../repositories/articles')
+var commsRepo = require('../repositories/comments')
+var express = require('express');
+var router = express.Router();
+const moment = require('moment')
+
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
   res.send(await articleRepo.getAllArticles())
