@@ -54,6 +54,6 @@ a {
 .my{
   transition: all ease 1s;
 }
-.active{
+nav .active{
   border-bottom: solid black 1px;
 }
