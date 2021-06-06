@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <script>
+    let pp='articles'
     let offset =1;
     let limit = 20;
     let count;
@@ -31,7 +32,7 @@
 
           obj.map( item=>{
             if(cpt >= offset && cpt <= limit ){
-              document.getElementById('Articles').innerHTML +='<div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title"> <a onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h5> <p class="card-text">'+item.content+'</p></div><div class="card-footer"> <small style="float: right">'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small>'+item.NbrComments+' </div></div>';
+              document.getElementById('Articles').innerHTML +='<div class=" col"><div class="card h-100 my"><div class="card-body"><h5 class="card-title"> <a type="button" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h5> <p class="card-text">'+item.content+'</p></div><div class="card-footer"> <small style="float: right">'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small>'+item.NbrComments+' </div></div>';
             }
             cpt++;
           })
@@ -54,7 +55,7 @@
           offset= ((page-1)*20)+1 ;
           limit= (page*20) ;
           document.getElementById('count').innerHTML='';
-          document.getElementById('lstArticle').innerHTML='';
+          document.getElementById('Articles').innerHTML='';
           document.getElementById('padding').innerHTML ='';
           getArticles();
         }
@@ -70,7 +71,7 @@
           document.getElementById('padding').innerHTML='';
           document.getElementById('Articles').innerHTML=""
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"> <div class="forum-icon"> <i class="fa fa-shield"></i> </div> <a class="forum-item-title" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
+              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><h6> <a class="forum-item-title" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h6> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
           })
           response = await fetch('http://localhost:3000/articles/'+id+'/comments');
           data = await response.text()
@@ -78,8 +79,7 @@
           console.log(obj);
           document.getElementById('lstArticle').innerHTML+='<h4> Comments </h4> ';
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"> <div class="forum-icon"> <i class="fa fa-comment"></i> </div> <div class="forum-sub-title">'+item.content+' </div><br>';
-            
+              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><div class="forum-sub-title">'+item.content+' </div><br>';
           })
         }
   </script>
@@ -95,11 +95,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link " type="button" onclick="Articles()" aria-current="page">Home</a>
-          <a class="nav-link" onclick="Users()" aria-current="page" type="button">Users</a>
+          <a class="nav-link active" type="button" id="h" onclick="Articles()" aria-current="page">Home</a>
+          <a class="nav-link" onclick="Users()" id="u" aria-current="page" type="button">Users</a>
         </div>
       </div>
     </div>
+
   </nav>
 
 
@@ -122,7 +123,9 @@
                           <div id="Articles" class="row row-cols-1 row-cols-md-3 g-4"">        
                             <script> getArticles();</script>
                           </div>
-                          <div id="padding" class="pagination">
+                          <div align="center">
+                            <div  id="padding" class="pagination">
+                            </div>
                           </div>
                       </div>
               </div>
@@ -130,6 +133,7 @@
           </div>
       </div>
   </div>
+</div>
   <div id="USERS" style="position: relative;display: none;">
     <ul class=" nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
@@ -333,10 +337,14 @@
       }*/
     //gestion de la page
     function Users(){
+      document.getElementById('u').classList.add("active")
+      document.getElementById('h').classList.remove("active")
       document.getElementById('USERS').style.display="block";
       document.getElementById('ARTICLES').style.display="none";
     } 
     function Articles(){
+      document.getElementById('h').classList.add("active")
+      document.getElementById('u').classList.remove("active")
       document.getElementById('ARTICLES').style.display="block";
       document.getElementById('USERS').style.display="none";
     }

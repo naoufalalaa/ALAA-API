@@ -9,7 +9,7 @@ var sequelize = require('sequelize');
       include: { model: Comment,attributes: []}
     });
    },
-   countComments(offset = 0, limit = 10) {
+   countComments() {
     return Article.findAll({
      group : ['Article.id'],
      attributes: ['id','title','content','createdAt', [sequelize.fn('COUNT', 'Comments.id'), 'NbrComments']],

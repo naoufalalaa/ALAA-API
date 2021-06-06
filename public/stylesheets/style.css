@@ -8,24 +8,31 @@ body {
 }
 .pagination {
   display: inline-block;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px;
 }
 
 .pagination a {
+  margin:10px;
   color: black;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .pagination a.active {
-  background-color: #220022;
-  color: white;
+  background-color: #F2F3F4;
+  color: black;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .pagination a:hover:not(.active) {
-  background-color: #ddd;
+  background-color: #F2F3F8;
   border-radius: 5px;
+
 }
 a {
   color: #00B7FF;
@@ -38,4 +45,15 @@ a {
   width: 100%;
   display: block;
   padding: 10px;
+}
+.my:hover{
+  transition: all ease 1s;
+  background-color: rgba(241, 241, 241, 0.562)!important;
+  box-shadow: #F1F1F1 0px 0px 20px 5px;
+}
+.my{
+  transition: all ease 1s;
+}
+.active{
+  border-bottom: solid black 1px;
 }
