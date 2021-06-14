@@ -71,7 +71,7 @@
           document.getElementById('padding').innerHTML='';
           document.getElementById('Articles').innerHTML=""
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row" align="left"> <div><h4>'+item.title+'</h4> <hr><div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
+              document.getElementById('lstArticle').innerHTML +='<div class="row" align="center"> <div><h4>'+item.title+'</h4> <hr><div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
           })
           response = await fetch('http://localhost:3000/articles/'+id+'/comments');
           data = await response.text()
@@ -149,9 +149,6 @@
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-selected="true">All Users</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="false">Add User</button>
-      </li>
-      <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#modify" type="button" role="tab" aria-controls="modify" aria-selected="false">Edit users</button>
       </li>
     </ul>
@@ -184,8 +181,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div align="center" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="profile-tab">
       </div>
       <div align="center" class="tab-pane fade" id="modify" role="tabpanel" aria-labelledby="contact-tab">
         <div class="card text-center w-75 mt-3">
