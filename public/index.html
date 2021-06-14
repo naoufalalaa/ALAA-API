@@ -71,14 +71,14 @@
           document.getElementById('padding').innerHTML='';
           document.getElementById('Articles').innerHTML=""
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><h4>'+item.title+'</h4> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
+              document.getElementById('lstArticle').innerHTML +='<div class="row" align="left"> <div><h4>'+item.title+'</h4> <hr><div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
           })
           response = await fetch('http://localhost:3000/articles/'+id+'/comments');
           data = await response.text()
           obj = JSON.parse(data);
           console.log(obj);
           var c=1;
-          document.getElementById('lstArticle').innerHTML+='<div class="card" style="width: 18rem;"><div class="card-header"><h4> Comments </h4></div><ul class="list-group list-group-flush">';
+          document.getElementById('lstArticle').innerHTML+='<div class="card"><div class="card-header"><h4> Comments </h4></div><ul class="list-group list-group-flush">';
           obj.map( item=>{
               document.getElementById('lstArticle').innerHTML +='<li class="list-group-item"><h6>Comment '+c+' <em><small><small><small>'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small></small></small></em></h6>'+item.content+'</li>';
               c++;
@@ -128,7 +128,7 @@
                               </div>
                               <h3>General subjects</h3>
                           </div>
-                          <div id="lstArticle"></div>
+                          <div id="lstArticle" align="right"></div>
                           <div id="Articles" class="row row-cols-1 row-cols-md-3 g-4"">        
                             <script> getArticles();</script>
                           </div>
