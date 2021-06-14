@@ -33,7 +33,7 @@ const Article = [...Array(200)].map((Article) => (
 const Comment = [...Array(2000)].map((Comment) => (
   {
     content:faker.lorem.paragraph(),
-    ArticleId:faker.helpers.randomize(_.range(401,600,1)),
+    ArticleId:faker.helpers.randomize(_.range(1,200,1)),
     createdAt: new Date(),
     updatedAt: new Date()
   }
