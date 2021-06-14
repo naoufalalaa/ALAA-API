@@ -11,7 +11,10 @@ router.get('/', async function(req, res){
 router.get('/:id', async function(req, res){
 	res.send(await User.getUser(req.params.id))
 })
-
+router.get('/admins', async function (req, res, next) {
+	res.send(await User.getAdmins())
+  });
+  
 router.post('/', async function(req, res){
 	let user = {};
 	user.username = req.body.username

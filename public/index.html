@@ -20,6 +20,11 @@
     let count;
     let localPage=1;
     let lastpage=0;
+
+    function colorlocalpad(){
+            document.getElementById('pad'+localPage).classList.add("active");
+            document.getElementById('pad'+lastpage).classList.remove("active");
+    }
     async function getArticles() {
           let res = await fetch('http://localhost:3000/articles/count');
            count = await res.status;
@@ -27,12 +32,10 @@
           let response = await fetch('http://localhost:3000/articles/countComm');
           data = await response.text()
           let obj = JSON.parse(data);
-          console.log(obj)
           let cpt=1;
-
           obj.map( item=>{
             if(cpt >= offset && cpt <= limit ){
-              document.getElementById('Articles').innerHTML +='<div class=" col"><div class="card h-100 my"><div class="card-body"><h5 class="card-title"> <a type="button" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h5> <p class="card-text">'+item.content+'</p></div><div class="card-footer"> <small style="float: right">'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small>'+item.NbrComments+' </div></div>';
+              document.getElementById('Articles').innerHTML +='<div class=" col"><div class="card h-100 my"><div class="card-body"><h5 class="card-title"> <a type="button" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h5> <p class="card-text">'+item.content+'</p></div><div class="card-footer"> <small style="float: right">'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small>'+item.NbrComments+' Comments </div></div>';
             }
             cpt++;
           })
@@ -46,7 +49,7 @@
           document.getElementById('padding').innerHTML +='<a id="padnext" onclick="setpage('+(localPage+1)+')">&raquo;</a>';
           colorlocalpad();
         }
-        function setpage(page){
+    function setpage(page){
           let nbPage= count/20;
           if(page<1){return;}
           if(page>nbPage){return;}
@@ -56,14 +59,11 @@
           limit= (page*20) ;
           document.getElementById('count').innerHTML='';
           document.getElementById('Articles').innerHTML='';
+          document.getElementById('lstArticle').innerHTML='';
           document.getElementById('padding').innerHTML ='';
           getArticles();
         }
-        function colorlocalpad(){
-          document.getElementById('pad'+localPage).classList.add("active");
-          document.getElementById('pad'+lastpage).classList.remove("active");
-        }
-        async function getArticleWithComm(id){
+    async function getArticleWithComm(id){
           let response = await fetch('http://localhost:3000/articles/'+id );
           let data = await response.text()
           let obj = JSON.parse(data);
@@ -71,16 +71,19 @@
           document.getElementById('padding').innerHTML='';
           document.getElementById('Articles').innerHTML=""
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><h6> <a class="forum-item-title" onclick="getArticleWithComm('+item.id+')">'+item.title+'</a></h6> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
+              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><h4>'+item.title+'</h4> <div class="forum-sub-title">'+item.content+'</div> </div></div> <br>';
           })
           response = await fetch('http://localhost:3000/articles/'+id+'/comments');
           data = await response.text()
           obj = JSON.parse(data);
           console.log(obj);
-          document.getElementById('lstArticle').innerHTML+='<h4> Comments </h4> ';
+          var c=1;
+          document.getElementById('lstArticle').innerHTML+='<div class="card" style="width: 18rem;"><div class="card-header"><h4> Comments </h4></div><ul class="list-group list-group-flush">';
           obj.map( item=>{
-              document.getElementById('lstArticle').innerHTML +='<div class="row"> <div class="col-md-9"><div class="forum-sub-title">'+item.content+' </div><br>';
+              document.getElementById('lstArticle').innerHTML +='<li class="list-group-item"><h6>Comment '+c+' <em><small><small><small>'+(item.createdAt).split('-')[0]+'/'+(item.createdAt).split('-')[1]+'/'+(item.createdAt).split('-')[2].split('T')[0]+' at '+(item.createdAt).split('-')[2].split('T')[1].split(':')[0]+'h'+(item.createdAt).split('-')[2].split('T')[1].split(':')[1]+'</small></small></small></em></h6>'+item.content+'</li>';
+              c++;
           })
+          document.getElementById('lstArticle').innerHTML+='</ul></div>'
         }
   </script>
 </head>
@@ -183,32 +186,11 @@
         </div>
       </div>
       <div align="center" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="card text-center w-75 mt-3">
-          <div align="center" class="card-body">
-            <h5 class="card-title">Adding a user</h5>
-            <div id="validate"></div>
-            <div class="row g-2 mt-3 ">
-              <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
-              <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
-              <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="password"/></div>
-              <div class="col-12">
-      
-                  <select id="role" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
-                    <option selected>Choisissez le rôle</option>
-                    <option value="admin">Admin</option>
-                    <option value="guest">Guest</option>
-                    <option value="author">Author</option>
-                  </select>
-      
-              </div>
-              <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
-            </div>
-          </div>
-        </div>
       </div>
       <div align="center" class="tab-pane fade" id="modify" role="tabpanel" aria-labelledby="contact-tab">
         <div class="card text-center w-75 mt-3">
           <h5 class="card-title mt-4">Modify a specific user</h5>
+          <div id="msg"></div>
           <div align="center" class="card-body">  
             <div class="row g-2">
               <div class="row row-cols-lg-auto g-3 align-items-center">
@@ -222,7 +204,7 @@
               <div id="err"></div>
               <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="usernameUP"/></div>
               <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="emailUP"/></div>
-              <div class="col-3"><input class="form-control" type="password" placeholder="Modify Password" name="password" id="passwordUP"/></div>
+
               <div class="col-12">
       
                   <select id="roleUP" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
@@ -243,6 +225,20 @@
   <div align="center" id="SIGNIN" style="position: relative;display: none;">
     <h2>Sign In</h2>
     <hr class="w-50">
+    <div id="validate"></div>
+            <div class="row g-2 mt-3 ">
+              <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="username"/></div>
+              <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="email"/></div>
+              <div class="col-3"><input class="form-control" type="password" placeholder="Password" name="password" id="password"/></div>
+              <!-- <div class="col-12">
+                  <select id="role" name="role" aria-placeholder="Votre rôle" class="form-select" aria-label="Default select example">
+                    <option selected>Choisissez le rôle</option>
+                    <option value="admin">Admin</option>
+                    <option value="guest">Guest</option>
+                    <option value="author">Author</option>
+                  </select>
+              </div> -->
+              <button class="btn btn-primary col-3" onclick="createUser()">Add user <i class="fas fa-plus-square"></i></button>
   </div>
   <div align="center" id="LOGIN" style="position: relative;display: none;">
     <h2>LOG In</h2>
@@ -314,8 +310,8 @@
         _data.username = document.querySelector("#username").value
         _data.email = document.querySelector("#email").value
         _data.password = document.querySelector("#password").value
-        _data.role = document.querySelector("#role").value
-
+       // _data.role = document.querySelector("#role").value
+        _data.role='guest'
         fetch(URL, {
           method: "POST",
           body: JSON.stringify(_data),
@@ -328,15 +324,18 @@
     }
     async function updateUser(){
       const data= {}
-      data.username = document.querySelector("#usernameUP").value
-      data.email = document.querySelector("#emailUP").value
-      data.role = document.querySelector("#roleUP").value
+      data.username = document.getElementById("usernameUP").value
+      data.email = document.getElementById("emailUP").value
+      data.role = document.getElementById("roleUP").value
+      console.log(data)
       await fetch(URL, {
           method: "PUT",
           body: JSON.stringify(data),
           headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         .catch(err => console.log(err));
+        document.getElementById('msg').innerHTML = '<div class="alert alert-success mt-3" role="alert"><span class="fas fa-check-circle fa-2x" style=" vertical-align: middle;"></span><span> The User has been seccussefuly Updated</span></div>'
+
     }
     
     //Articles
@@ -390,7 +389,12 @@
       document.getElementById('SIGNIN').style.display="none";
     }
 
-   
+  //  function username(){
+  //    var name=document.getElementById('firstname').value;
+  //    var last=document.getElementById('lastname').value;
+  //    var username = name+'_'+last;
+  //    document.getElementById('username').setAttribute("value",username);
+  //  }
   </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
