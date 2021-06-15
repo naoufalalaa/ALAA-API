@@ -199,6 +199,7 @@
               <div id="err"></div>
               <div class="col-3"><input class="form-control" type="text" placeholder="Username" name="username" id="usernameUP"/></div>
               <div class="col-6"><input class="form-control" type="email" placeholder="E-mail" name="email" id="emailUP"/></div>
+              <input type="text" disabled hidden id="idUP"/>
 
               <div class="col-12">
       
@@ -209,7 +210,7 @@
                   </select>
       
               </div>
-              <button class="btn btn-primary col-auto" onclick="updateUser()">Modify <i class="fas fa-edit"></i>  </button>
+              <button class="btn btn-primary col-auto" id="upbtn" disabled>Modify <i class="fas fa-edit"></i>  </button>
             </div>
         </div>
       </div>
@@ -279,18 +280,22 @@
     async function getUser1() {
         let id = document.querySelector("#mysearch").value
         document.getElementById('err').style.display='none'
+        document.getElementById('msg').innerHTML=""
 
         try{
         if (id){
           let response = await fetch(`${URL}${id}`);
           let data = await response.text();
+          let idd = data.split(',')[0].split(':')[1]
+          document.getElementById('idUP').value=idd
           document.getElementById('usernameUP').value=data.split(',')[1].split(':')[1].split('"')[1].split('"')[0]
           document.getElementById('emailUP').value=data.split(',')[2].split(':')[1].split('"')[1].split('"')[0]
           const role = data.split(',')[3].split(':')[1].split('"')[1].split('"')[0]
           if(role==='admin') document.getElementById('admin').setAttribute("selected","")
           if(role==='guest') document.getElementById('guest').setAttribute("selected","")
           if(role==='author') document.getElementById('author').setAttribute("selected","")
-          console.log(data);
+          document.getElementById('upbtn').removeAttribute("disabled")
+          document.getElementById('upbtn').setAttribute("onclick","updateUser("+idd+")")
         }else{
           document.getElementById('err').style.display='block'
           document.getElementById('err').innerHTML='<div class="alert alert-warning mt-3" role="alert">Please specify the ID</div>'
@@ -300,7 +305,26 @@
           document.getElementById('err').innerHTML='<div class="alert alert-danger mt-3" role="alert">Impossible to get data!!</div>'
         }
     }
-    async function createUser() {
+
+    async function updateUser(id){
+      const data= {}
+      document.getElementById('msg').innerHTML=""
+      data.id = id
+      data.username = document.getElementById("usernameUP").value
+      data.email = document.getElementById("emailUP").value
+      data.role = document.getElementById("roleUP").value
+      console.log(data)
+      await fetch(URL, {
+          method: "put",
+          body: JSON.stringify(data),
+          headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        .catch(err => {
+          document.getElementById('msg').innerHTML='<div class="alert alert-danger mt-3" role="alert"><span> An error saying : `'+err+'` has occured during update</span></div>'
+          console.log(err)});
+        document.getElementById('msg').innerHTML = '<div class="alert alert-success mt-3" role="alert"><span> The User has been seccussefuly Updated</span></div>'
+    }
+        async function createUser() {
         var _data = {}
         _data.username = document.querySelector("#username").value
         _data.email = document.querySelector("#email").value
@@ -317,22 +341,6 @@
         .catch(err => console.log(err));
         document.getElementById('validate').innerHTML="<div class='alert alert-success'>User added successfully</div>"
     }
-    async function updateUser(){
-      const data= {}
-      data.username = document.getElementById("usernameUP").value
-      data.email = document.getElementById("emailUP").value
-      data.role = document.getElementById("roleUP").value
-      console.log(data)
-      await fetch(URL, {
-          method: "PUT",
-          body: JSON.stringify(data),
-          headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-        .catch(err => console.log(err));
-        document.getElementById('msg').innerHTML = '<div class="alert alert-success mt-3" role="alert"><span class="fas fa-check-circle fa-2x" style=" vertical-align: middle;"></span><span> The User has been seccussefuly Updated</span></div>'
-
-    }
-    
     //Articles
     /*async function getArticles() {
         let response = await fetch(URLArt);

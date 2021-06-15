@@ -20,7 +20,7 @@ router.post('/', async function(req, res){
 	user.username = req.body.username
 	user.email = req.body.email
 	user.password = req.body.password
-	user.role = req.body.role
+	user.role = "guest"
 	user.createdAt = moment().format('YYYY/MM/DD h:mm:ss')
 	user.updatedAt = user.createdAt
 	res.send(await User.addUser(user));
@@ -28,10 +28,10 @@ router.post('/', async function(req, res){
 
 router.put('/', async function(req, res){
 	let user= {}
+	user.id=req.body.id
 	user.username=req.body.username
 	user.email=req.body.email
 	user.role=req.body.role
-	user.updatedAt=moment().format('YYYY/MM/DD h:mm:ss')
 	res.send(await User.updateUser(user))
 })
 
